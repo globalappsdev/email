@@ -27,6 +27,17 @@ function CreateElement(type,multi=false) {
                 </div>
                     `
                 break
+
+
+            case 'spacer':
+                newitems = `
+                <div class='spacer' onclick="selectCell(this)">
+                    <div class='spacerdiv' style='height:15px'></div>
+                </div>
+                    `
+                break
+
+
             case 'button':
                 newitems = `
                     
@@ -42,6 +53,15 @@ function CreateElement(type,multi=false) {
                     </div>
                 `
                 break;
+
+            case 'avatar':
+                newitems =`
+                    <div class='avatar' onclick="selectCell(this)">
+                        <img src="path/to/image" alt="New Image" style="width: 100%; height: auto;">
+                    </div>
+                `
+                break;
+
             case '2-column':
                 newitems = `
                    
