@@ -15,6 +15,7 @@
 </head>
 <body>
 	<div class="topbar">
+		<button onclick="processEmailCanvas()">Clean</button>
 		<button style="Border:none; background-color: white;"><span style="color: gray;" onclick="showhideSlidebar()" id="shbutton" class="material-symbols-outlined">
 last_page
 </span></button>
@@ -25,7 +26,7 @@ last_page
 	</div>
 	<div class="canvas">
 
-		<div class="emailCanvas">
+		<div class="emailCanvas" >
 
 			<table class="emailtable" id="emailtable">
 				<tbody>
@@ -65,10 +66,10 @@ last_page
 			<div class="modelBtn" onclick="AddItem('button')"> <span class="material-symbols-outlined icon">variable_insert</span>Button</div>
 			<div class="modelBtn" onclick="AddItem('p')"> <span class="material-icons md-18 icon">view_headline</span>Paragraph</div>
 			<div class="modelBtn" onclick="AddItem('divider')"> <span class="material-icons md-18 icon">minimize</span>Divider</div>
-			<div class="modelBtn" onclick="AddItem('h1')"> <span class="material-symbols-outlined icon">align_space_between</span>Spacer</div>
+			<div class="modelBtn" onclick="AddItem('spacer')"> <span class="material-symbols-outlined icon">align_space_between</span>Spacer</div>
 			<div class="modelBtn" onclick="AddItem('2-column')"> <span class="material-symbols-outlined icon">view_column</span>Column</div>
 			<div class="modelBtn" onclick="AddItem('html-code')"> <span class="material-symbols-outlined icon">html</span>HTML</div>
-			<div class="modelBtn" onclick="AddItem('h1')"><span class="material-symbols-outlined icon">account_circle</span>Avatar</div>
+			<div class="modelBtn" onclick="AddItem('avatar')"><span class="material-symbols-outlined icon">account_circle</span>Avatar</div>
 
 		
 	</div>
@@ -81,6 +82,12 @@ last_page
 	<script  src="SideBtn.js"></script>
 	<script  src="divider.js"></script>
 	<script  src="responsive.js"></script>
+	<script  src="spacer.js"></script>
+	<script  src="html-code.js"></script>
+	<script  src="avatar.js"></script>
+	
+
+	
 	
 	
 </body>

@@ -17,7 +17,7 @@ textContent =
             
             <div class='inspectBox slid'>
 	            <label for="font-size">Font Size:</label>
-	            <div>
+	            <div >
 		            <input type="range" id="font-size" min="10" max="72" value="16" oninput="changeFontSize()"> 
 		            <span id='textsize' style='color: #4f4f4f96; font-size:24px'>0px</span>
 	            </div>

@@ -9,6 +9,9 @@ function selectCell(button){
                       button.classList.contains('html-code') ? 'html-code' :
                       button.classList.contains('multitable') ? 'multitable' :
                       button.classList.contains('dividerClass') ? 'dividerClass' :
+                      button.classList.contains('spacer') ? 'spacer' :
+                      button.classList.contains('avatar') ? 'avatar' :
+
 
                       '';
   	
@@ -193,7 +196,66 @@ function updatesidebar(cellClass, button){
 		document.getElementById('paddingbottom').value = parseInt(computedStyle.paddingBottom)
 
 
+	}else if(cellClass=='spacer'){
+		openTab('Inspect')
+		content = button
+		inspectTab.innerHTML = ''
+		inspectTab.innerHTML = SpacerContent;
+
+		document.getElementById('spacer-height').value = parseInt(window.getComputedStyle(content.querySelector('.spacerdiv')).height)
+		document.getElementById('spacehight').textContent = parseInt(window.getComputedStyle(content.querySelector('.spacerdiv')).height) + 'px'
+		document.getElementById('cell-bg-color').value = rgbToHex(window.getComputedStyle(button.parentElement).backgroundColor);
+	
+	}else if(cellClass=='html-code'){
+		openTab('Inspect')
+		content = button
+		inspectTab.innerHTML = ''
+		inspectTab.innerHTML = htmlCodeContent;
+
+		const htmlcode = content.querySelector('strong');
+
+		document.getElementById('cell-text').value = htmlcode.outerHTML.trim();
+		document.getElementById('font-size').value = parseInt(window.getComputedStyle(button).fontSize);
+		document.getElementById('textsize').innerHTML = window.getComputedStyle(button).fontSize
+		//Add font-style
+		var computedStyle = window.getComputedStyle(content);
+
+		
+    	
+		document.getElementById('paddingtop').value = parseInt(computedStyle.paddingTop)
+		document.getElementById('paddingleft').value = parseInt(computedStyle.paddingLeft)
+		document.getElementById('paddingright').value = parseInt(computedStyle.paddingRight)
+		document.getElementById('paddingbottom').value = parseInt(computedStyle.paddingBottom)
+
+		document.getElementById('cell-color').value = rgbToHex(window.getComputedStyle(button).color);
+        document.getElementById('cell-bg-color').value = rgbToHex(window.getComputedStyle(button.parentElement).backgroundColor);
+
+	}else if(cellClass=='avatar'){
+		openTab('Inspect')
+		content = button
+
+		inspectTab.innerHTML = ''
+		inspectTab.innerHTML = avatarContent
+
+
+		document.getElementById('image-url').value = content.querySelector('img').src
+		document.getElementById('image-width').value = parseInt(window.getComputedStyle(content.querySelector('img')).width)
+		document.getElementById('imgwidth').innerHTML = parseInt(window.getComputedStyle(content.querySelector('img')).width) + 'px'
+		document.getElementById('cell-bg-color').value = rgbToHex(window.getComputedStyle(button.parentElement).backgroundColor);
+		//document.getElementById('image-height').value = parseInt(window.getComputedStyle(content.querySelector('img')).width)
+		//document.getElementById('imgheight').innerHTML = parseInt(window.getComputedStyle(content.querySelector('img')).height) + 'px'
+
+		
+
+		var computedStyle = window.getComputedStyle(content);
+    	
+		document.getElementById('paddingtop').value = parseInt(computedStyle.paddingTop)
+		document.getElementById('paddingleft').value = parseInt(computedStyle.paddingLeft)
+		document.getElementById('paddingright').value = parseInt(computedStyle.paddingRight)
+		document.getElementById('paddingbottom').value = parseInt(computedStyle.paddingBottom)
+
 	}
+		
 }
 
 
