@@ -315,85 +315,69 @@ function cleanHtml1() {
   console.log("CLA ", tempElement);
   return tempElement.innerHTML;
 }
+
 function processEmailCanvas() {
   // Clone the emailCanvas
   const originalElement = document.querySelector('.emailCanvas');
   const tempElement = originalElement.cloneNode(true);
   document.body.appendChild(tempElement); // Temporarily add to DOM to compute styles
 
-  // Function to get all style rules
-  function getAllStyleRules(element) {
-  
-    const matchedStyles = {};
-    for (let sheet of document.styleSheets) {
-      if (sheet.href && sheet.href.endsWith('styles.css')) {
-        try {
-          for (let rule of sheet.cssRules) {
-            if (element.matches(rule.selectorText)) {
-              for (let i = 0; i < rule.style.length; i++) {
-                const styleName = rule.style[i];
-                matchedStyles[styleName] = rule.style.getPropertyValue(styleName);
-              }
-            }
-          }
-        } catch (e) {
-          console.warn('Could not access stylesheet:', sheet.href);
-        }
+  // Get all CSS rules from stylesheets
+  const cssRules = Array.from(document.styleSheets)
+    .flatMap(sheet => {
+      try {
+        return Array.from(sheet.cssRules);
+      } catch (e) {
+        console.warn('Cannot read rules from stylesheet', sheet.href, e);
+        return [];
       }
-    }
-    return matchedStyles;
-  }
-
-  // Get all CSS rules
-  
+    });
 
   // Process all elements
- function processElement(element) {
-  // Remove onclick attributes
-  const cssRules = getAllStyleRules(element);
-  element.removeAttribute('onclick');
-  
-  // Get computed styles
-  const computedStyles = window.getComputedStyle(element);
-  
-  // Get existing inline styles
-  const existingInlineStyles = element.getAttribute('style') || '';
-  const inlineStyleMap = new Map(existingInlineStyles.split(';')
-    .filter(style => style.trim())
-    .map(style => style.split(':').map(s => s.trim())));
+  function processElement(element) {
+    // Remove onclick attributes
+    element.removeAttribute('onclick');
 
-  // Apply styles from cssRules
-  Object.entries(cssRules).forEach(([property, value]) => {
-    inlineStyleMap.set(property, value);
-  });
+    // Get computed styles
+    const computedStyles = window.getComputedStyle(element);
+    
+    // Get existing inline styles
+    const existingInlineStyles = element.getAttribute('style') || '';
+    const inlineStyleMap = new Map(existingInlineStyles.split(';')
+      .filter(style => style.trim())
+      .map(style => style.split(':').map(s => s.trim())));
 
-  // If no matching rules were found, use all computed styles
-  if (Object.keys(cssRules).length === 0) {
-    for (let i = 0; i < computedStyles.length; i++) {
-      const property = computedStyles[i];
-      const value = computedStyles.getPropertyValue(property);
-      if (value) {
-        inlineStyleMap.set(property, value);
+    // Find matching CSS rules
+    const matchingRules = cssRules.filter(rule => 
+      rule.selectorText && element.matches(rule.selectorText)
+    );
+
+    // Combine styles from matching rules and computed styles
+    matchingRules.forEach(rule => {
+      for (let i = 0; i < rule.style.length; i++) {
+        const property = rule.style[i];
+        const value = computedStyles.getPropertyValue(property);
+        if (value) {
+          inlineStyleMap.set(property, value);
+        }
       }
-    }
+    });
+
+    // Set the combined inline styles
+    const newInlineStyles = Array.from(inlineStyleMap.entries())
+      .map(([prop, value]) => `${prop}: ${value}`)
+      .join('; ');
+    element.setAttribute('style', newInlineStyles);
+
+    // Remove class attribute
+    element.removeAttribute('class');
+
+    // Process child elements
+    Array.from(element.children).forEach(processElement);
   }
 
-  // Set the combined inline styles
-  const newInlineStyles = Array.from(inlineStyleMap.entries())
-    .map(([prop, value]) => `${prop}: ${value}`)
-    .join('; ');
-  element.setAttribute('style', newInlineStyles);
-
-  // Remove class attribute
-  element.removeAttribute('class');
-
-  // Process child elements
-  Array.from(element.children).forEach(processElement);
-}
-
-  console.log('tempElement',tempElement)
   // Remove divs with specified classes
-  const classesToRemove = ['delete', 'bottomAdd']; // Add classes to remove here
+  const classesToRemove = ['delete','addBottom']; // Add classes to remove here
   const elementsToRemove = tempElement.querySelectorAll(classesToRemove.map(c => '.' + c).join(','));
   elementsToRemove.forEach(el => el.parentNode.removeChild(el));
 
